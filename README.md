@@ -1,69 +1,20 @@
-# React + TypeScript + Vite
+## Inspiration
+Since I always prefer videos with captions over pure audio, I wanted an easy and fast way to caption videos that often lack them.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## What it does
+EasyCaption captions videos in English using a speech to text model. This works for videos in any language. For example, a video in Spanish will have English subtitles. The resulting video can be watched directly in the web app or downloaded for later.
 
-Currently, two official plugins are available:
+## How we built it
+I used a Vite + React + TypeScript template to get started with the project. I used FastAPI for the backend, and FFmpeg command line executed with Python subprocess to handle the video creation process. Whisper was used for its speech to text transcription and timing.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Challenges we ran into
+I had an issue with loading the videos from the backend and displaying them on the frontend. I tackled this issue by assigning a unique key to each video, so that the page would re-render on every new video.
 
-## Expanding the ESLint configuration
+## Accomplishments that we're proud of
+I am very proud to have gone from nothing to a working product in <7 hours. 
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## What we learned
+I learned how to serve files from the frontend to the backend, and vice versa.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## What's next for EasyCaption
+I want to expand on this project to make it cloud hosted and readily available for anyone to use.
