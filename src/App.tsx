@@ -43,6 +43,9 @@ function App() {
 
   return (
     <>
+      <div className="title">
+        EasyCaption
+      </div>
       <div className="uploadDiv">
         <div>
           <label> Select a video to upload: </label>

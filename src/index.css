@@ -126,3 +126,8 @@ body {
   background-color: #2d2d2d;
   border: 1px solid #404040;
 }
+
+.title {
+  font-size: 35px;
+  font-weight: 1000;
+}
