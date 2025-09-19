@@ -3,13 +3,20 @@ import './App.css'
 
 function App() {
   const [inputVideo, setInputVideo] = useState<File | null>(null);
-  let videoDone: boolean = false;
+  const [translate, setTranslate] = useState<boolean>(false);
+  const [videoDone, setVideoDone] = useState<boolean>(false);
+  const [videoKey, setVideoKey] = useState<number>(0);
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log("File changed")
 
     if (event.target.files && event.target.files.length > 0)
       setInputVideo(event.target.files[0]);
+  };
+
+  const handleTranslateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setTranslate(event.target.value === "translate");
   };
 
   const handleSubmit = async () => {
@@ -22,10 +29,12 @@ function App() {
 
     const formData = new FormData();
     formData.append("video", inputVideo);
+    formData.append("translate", translate ? "true" : "false");
 
     try {
-      await fetch("http://localhost:8000/burn-captions", { method: "POST", body: formData })
-      videoDone = true;
+      await fetch("http://localhost:8000/burn-captions", { method: "POST", body: formData });
+      setVideoDone(true);
+      setVideoKey(Date.now());
     }
     catch (err) {
       console.error("Error uploading video: ", err);
@@ -36,9 +45,18 @@ function App() {
     <>
       <div className="uploadDiv">
         <div>
-          <label> Select a video to upload </label>
+          <label> Select a video to upload: </label>
           <input type="file" accept="video/mp4" onChange={handleFileChange} />
         </div>
+
+        <div>
+          <label> Translation option: </label>
+          <select onChange={handleTranslateChange}>
+            <option value="original">Keep original language</option>
+            <option value="translate">Translate to English</option>
+          </select>
+        </div>
+
         <div>
           <button onClick={handleSubmit}>Submit</button>
         </div>
@@ -46,8 +64,8 @@ function App() {
 
       <div className="outputDiv">
         {videoDone &&
-          <video controls>
-            <source src="http://localhost:8000/temp/output.mp4" type="video/mp4" />
+          <video controls key={videoKey}>
+            <source src={`http://localhost:8000/temp/output.mp4?t=${videoKey}`} type="video/mp4" />
           </video>
         }
       </div>

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from captions import transcribe, create_caption_file, burn_captions
@@ -19,14 +19,19 @@ async def test():
     return {"hello"}
 
 @app.post('/burn-captions')
-async def test(video: UploadFile = File(...)):
-    print("burn captions")
-    video_path = os.path.join("assets", video.filename)
+async def test(video: UploadFile = File(...), translate: str = Form(...)):
+    do_translate = translate == "true" # boolean
+    print(f"burn captions, translate: {do_translate}")
 
+    video_path = os.path.join("assets", video.filename)
     with open(video_path, "wb") as f:
         f.write(await video.read())
 
-    captions = transcribe(video_path)
+    if (do_translate):
+        captions = transcribe(video_path, "translate")
+    else:
+        captions = transcribe(video_path, "transcribe")
+    
     create_caption_file(captions)
 
     burn_captions(video_path)

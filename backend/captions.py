@@ -14,8 +14,8 @@ WHISPER_MODEL = whisper.load_model("tiny")
 
 Phrase = namedtuple("Phrase", ["text", "start", "end"])
 
-def transcribe(video_path):
-    result = WHISPER_MODEL.transcribe(video_path)
+def transcribe(video_path, task):
+    result = WHISPER_MODEL.transcribe(video_path, task=task)
     captions = []
     for segment in result["segments"]:
         text = segment["text"]
